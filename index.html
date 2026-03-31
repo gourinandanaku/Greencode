@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Code Engine</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap');
+        
+        :root {
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.7);
+            --primary: #10b981;
+            --primary-hover: #059669;
+            --primary-glow: rgba(16, 185, 129, 0.3);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 2rem;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.1), transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(56, 189, 248, 0.05), transparent 40%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background: var(--surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #34d399, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .layout { grid-template-columns: 1fr; }
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        select, textarea {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 12px;
+            padding: 1rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 250px;
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.5;
+        }
+
+        select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 8px 20px -6px var(--primary);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px -8px var(--primary);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button.loading {
+            opacity: 0.8;
+            cursor: wait;
+            transform: none;
+        }
+
+        .results {
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .results.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .results-inner {
+            padding: 1.5rem;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .explanation {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 3px solid #3b82f6;
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            color: #e2e8f0;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .output-heading {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+        }
+        
+        pre {
+            background: #000;
+            padding: 1rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            color: #34d399;
+            font-size: 0.85rem;
+            margin: 0;
+            border: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Green Code Engine</h1>
+        <div class="subtitle">Optimize logic for maximum efficiency</div>
+    </div>
+    
+    <div class="layout">
+        <div>
+            <div class="input-group">
+                <label for="language">Language</label>
+                <select id="language">
+                    <option value="python">Python</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="c">C</option>
+                    <option value="cpp">C++</option>
+                    <option value="java">Java</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="codeInput">Source Code</label>
+                <textarea id="codeInput" placeholder="Paste your code here..." spellcheck="false"></textarea>
+            </div>
+            
+            <button id="optimizeBtn" onclick="optimizeCode()">Optimize Execution</button>
+        </div>
+        
+        <div id="resultsPanel" class="results">
+            <div class="results-inner">
+                <div class="explanation" id="explanationText">Results will appear here.</div>
+                
+                <div class="stat-grid">
+                    <div class="stat">
+                        <div class="stat-label">CPU Savings</div>
+                        <div class="stat-value" id="cpuResult">-</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Memory Savings</div>
+                        <div class="stat-value" id="memResult">-</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Green Score</div>
+                        <div class="stat-value" id="greenScoreResult">-</div>
+                    </div>
+                </div>
+                
+                <div class="output-heading">Optimized Code</div>
+                <pre><code id="optimizedOutput">// Awaiting input...</code></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function optimizeCode() {
+        const btn = document.getElementById('optimizeBtn');
+        const code = document.getElementById('codeInput').value;
+        const language = document.getElementById('language').value;
+        const resultsPanel = document.getElementById('resultsPanel');
+        
+        if (!code.trim()) return;
+
+        btn.classList.add('loading');
+        btn.innerText = 'Optimizing...';
+        
+        try {
+            const response = await fetch('http://127.0.0.1:8000/optimize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code, language })
+            });
+            
+            const data = await response.json();
+            
+            document.getElementById('explanationText').innerText = data.explanation;
+            document.getElementById('cpuResult').innerText = data.estimated_cpu_savings;
+            document.getElementById('memResult').innerText = data.estimated_memory_savings;
+            document.getElementById('greenScoreResult').innerText = data.green_score + "/100";
+            document.getElementById('optimizedOutput').innerText = data.optimized_code;
+            
+            resultsPanel.classList.add('show');
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to reach backend.');
+        } finally {
+            btn.classList.remove('loading');
+            btn.innerText = 'Optimize Execution';
+        }
+    }
+</script>
+
+</body>
+</html>
