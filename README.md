@@ -95,7 +95,8 @@ Attach screenshots in a `/proof` folder:
 
 ![AI Proof](./proof/screenshot1.png)
 
----
+---<img width="1919" height="1013" alt="Screenshot 2026-04-01 071303" src="https://github.com/user-attachments/assets/d0a6190e-516c-4996-a72c-a2958baa1c89" />
+
 
 ## Screenshots 
 Add project screenshots:
