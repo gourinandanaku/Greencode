@@ -1,0 +1,125 @@
+<img width="1916" height="965" alt="Screenshot 2026-04-01 064357" src="https://github.com/user-attachments/assets/a35b52fb-339c-416b-acbe-cac487d5106d" /># GREEN CODE OPTIMIZATION
+
+## Problem Statement
+Problem Statement: The Need for Sustainable "Green" Coding
+With the exponential growth of cloud computing, AI, and big data, data centers now consume a massive and rapidly growing share of global electricity, contributing heavily to carbon emissions. A significant percentage of this energy is simply wasted due to inefficient software architecture—such as unoptimized algorithms, excessive memory allocation, and redundant processing cycles.
+
+Despite the environmental and financial costs of compute-heavy code, most developers lack real-time, actionable insights into the empirical "greenness" of their code during the active development lifecycle. Traditional linting tools catch syntax errors, but fail to identify structural inefficiencies that drain CPU and RAM at scale.
+
+
+
+## Project Description
+Project Description: Green Code Engine
+Overview The Green Code Engine is an intelligent, full-stack web application designed to promote sustainable software engineering practices. Built as a fast, lightweight AI tool, it empowers developers to actively reduce the carbon footprint and operational costs of their applications by identifying and refactoring computationally expensive code in real-time.
+
+Core Functionality Unlike standard linters that only check for syntax errors or style guide adherence, the Green Code Engine acts as an AI-powered static analyzer. Users paste raw source code—currently supporting Python, JavaScript, C, C++, and Java—into the web interface.
+
+The application securely transmits this code to the backend, where it is analyzed by Google's state-of-the-art Gemini Large Language Model. The AI specifically evaluates the code’s algorithmic complexity and memory efficiency, actively hunting for power-draining bottlenecks such as nested loops, redundant data structures, non-vectorized operations, and memory leaks.
+
+Key Features
+
+AI Refactoring: Instantly rewrites the user's source code into a highly optimized, production-ready format.
+Explainability: Provides a brief, human-readable explanation of exactly why the code was inefficient and how the new architecture solves the problem.
+Green Metrics: Quantifies the improvements by simulating the runtime environment and assigning a dynamic "Green Score" (0–100) to the codebase, alongside percentage estimations for CPU Savings and Memory Savings.
+Modern UI/UX: Features a responsive, rich "glassmorphic" dark-mode frontend built with raw CSS, ensuring a sleek and seamless developer experience without the bloat of client-side frameworks.
+Technology Stack
+
+Frontend: Vanilla HTML5, CSS3 (Glassmorphism design system), and Asynchronous JavaScript (Fetch API).
+Backend API: Python 3.11 with FastAPI for ultra-fast, asynchronous HTTP routing.
+Artificial Intelligence: Integrates the google-generativeai official Python SDK, routing traffic strictly to the ultra-fast gemini-1.5-flash or gemini-pro models.
+Infrastructure & Deployment: The entire application is containerized using Docker and natively deployed to Google Cloud Run (GCP) for secure, serverless scalability. Environment configurations and API keys are strictly managed via python-dotenv.
+
+---
+
+## Google AI Usage
+The core intelligence of the Green Code Engine is powered entirely by Google's Gemini AI API, utilizing cutting-edge Large Language Models (LLMs).
+
+Here is exactly how Google AI operates within the architecture:
+
+Dynamic Model Selection: Upon receiving a code snippet from the frontend, the FastAPI Python backend securely initializes the google-generativeai SDK. It dynamically polls Google's API to detect which generative models your specific API key has access to (prioritizing high-speed models like gemini-1.5-flash or the industry-standard gemini-pro).
+
+Contextual Prompt Engineering: The application doesn't just hand the code blindly to the AI. It constructs a highly specific, engineered prompt that instructs Gemini to act as a "Green Code Software Engineer". The AI is tasked with executing static analysis on the code to identify structural inefficiencies like:
+
+Nested loops that generate $O(N^2)$ algorithmic complexity
+Unnecessary list comprehensions draining memory
+Omitted opportunities for generators or vectorized processing
+Structured Data Generation: Google AI goes beyond simple text generation; it is strictly prompted to return its empirical analysis formatted perfectly as a JSON object. This JSON object contains the explicitly refactored source code alongside concrete simulated statistics—specifically estimated CPU savings, Memory savings, and an overall Green Score out of 100.
+
+Fault-Tolerant Parsing & Explainability: Once Google AI generates the JSON block, the backend uses advanced string parsing to safely extract the data (ignoring any conversational markdown or text generated by the AI) and feeds it directly into the web interface's visual statistics grid. If the AI provides an unexpected output, the backend automatically enters a diagnostic mode and prints the AI's raw thoughts for transparency.
+
+
+
+### Tools / Models Used
+1. Generative AI Models (Google Gemini)
+
+gemini-1.5-pro-latest / gemini-pro: Core Large Language Models explicitly queried by the backend via the robust google-generativeai package.
+gemini-1.5-flash-latest: Actively prioritized in dynamic model selection logic for ultra-fast, low-latency code static analysis and optimization.
+2. Backend Infrastructure & API
+
+Python (3.11+): The primary server-side programming language linking the user logic strictly to the Google Cloud AI architecture.
+FastAPI: A high-performance, modern web framework responsible for managing non-blocking, asynchronous HTTP REST requests from the UI.
+Uvicorn: An ASGI web server deployed alongside FastAPI to securely route inbound browser requests to Python endpoints.
+Pydantic: Enforces strict Data Validation policies, ensuring user source-code input payloads (AnalyzeRequest) are correctly formed.
+3. Frontend Architecture
+
+HTML5 & Vanilla JavaScript: A lightweight, script-free (No React/Vue) integration querying fetch() directly from the DOM to the API, completely avoiding bulky module bundlers.
+Vanilla CSS (Glassmorphism): The UI leverages entirely custom CSS utilizing frosted-glass visual effects, CSS grid layouts, and dynamic micro-animations without relying on frameworks like Tailwind or Bootstrap.
+Google Fonts: Uses Inter for modern typography and JetBrains Mono for developer-oriented code block rendering.
+4. Security & Environment Flow
+
+python-dotenv: Securely handles local environment variables alongside a .gitignore constraint, guaranteeing that the GEMINI_API_KEY never touches public repositories.
+FastAPI CORSMiddleware: Prevents Cross-Origin Resource Sharing vulnerabilities, protecting the optimization endpoint from unauthorized web domains.
+5. Cloud Deployment & Containerization
+
+Docker Engine: The complete project is bundled inside an optimized Linux Container (Dockerfile), freezing the ecosystem so it easily boots with zero dependency issues anywhere on the internet.
+Google Cloud Run: A fully managed, serverless platform seamlessly hosting the stateless Docker Container by allocating computing power, memory, and scaling instantly on demand.
+gcloud CLI / PowerShell Scripts: Direct local deployment bridges allowing secure staging, push, and container versioning right from the active folder.
+
+- 
+
+### How Google AI Was Used
+1. Contextual Code Comprehension Rather than relying on basic text replacement or regular expressions to find inefficient code, the application packages the user's raw source code—along with their specific programming language—and securely pushes it to Google’s Gemini Large Language Models via the google-generativeai SDK. The AI acts as a senior software engineer, syntactically reading the code to fully map out its logical execution paths.
+
+2. Intelligent Refactoring Google AI actively identifies performance drains such as nested O(N^2) loops, unused variables, and excessive memory allocations. It then autonomously rewrites the logic using modern best practices (like implementing generators in Python or vectorized mapping in JavaScript) to drastically reduce the program's computational footprint.
+
+3. Deterministic JSON Generation The AI is strictly prompted to bypass conversational output and generate structured data. It formulates exactly five data points: the refactored source code, a brief explanation of the fix, realistic CPU savings estimations, memory savings estimations, and an overall efficiency "Green Score," returning them as a rigid JSON object for the backend to render dynamically.
+
+4. Dynamic & Safe Model Polling The backend incorporates a dynamic fallback mechanism that polls Google's servers on startup to request a list of generative models the user explicitly has access to. It automatically parses this list to safely target the highest-speed model available (such as gemini-1.5-flash-latest or gemini-pro), ensuring the AI request never fails due to API-versioning errors.
+
+
+
+---
+
+## Proof of Google AI Usage
+Attach screenshots in a `/proof` folder:
+
+![AI Proof](./proof/screenshot1.png)
+
+---
+
+## Screenshots 
+Add project screenshots:
+
+![Screenshot1](./assets/screenshot1.png)  
+![Screenshot2](./assets/screenshot2.png)
+![Uploading Screenshot 2026-04-01 0643<img width="1919" height="962" alt="Screenshot 2026-04-01 064534" src="https://github.com/user-attachments/assets/7330c1f0-8243-4e5f-a61d-ca83393162ce" />
+57.png…]()
+
+---
+
+## Demo Video
+Upload your demo video to Google Drive and paste the shareable link here(max 3 minutes).
+[Watch Demo](#)
+https://drive.google.com/file/d/1KuQS4PnUE0UapRuKiw57oozfxPWrsio9/view?usp=sharing
+---
+
+## Installation Steps
+
+```bash
+# Clone the repository
+git clone https://github.com/gourinandanaku/Greencode.git
+
+# Go to project folder
+cd project-name
+
+pip install -r requirements.txt
